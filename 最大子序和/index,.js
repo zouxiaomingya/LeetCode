@@ -12,8 +12,6 @@ var maxSubArray = function (nums) {
     }
     return max;
 };
-
-
 var twoSum = function (nums, target) {
     for (let i = 0; i <= nums.length - 1; i++) {
         const m = nums.indexOf(target - nums[i]);
