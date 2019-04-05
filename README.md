@@ -1,4 +1,8 @@
-## 每日两题 LeetCode 加油
+## 每日两题 LeetCode
+
+### LeetCode 题序
+
+> 53, 1, 15，
 
 ### 最大子序和 - 53
 
@@ -51,6 +55,131 @@ var twoSum = function(nums, target) {
     if (m !== -1 && m !== i)
       return [i, m]
   }
+};
+```
+
+### 三数之和 - 15
+
+给定一个包含 *n* 个整数的数组 `nums`，判断 `nums` 中是否存在三个元素 *a，b，c ，*使得 *a + b + c =* 0 ？找出所有满足条件且不重复的三元组。
+
+**注意：**答案中不可以包含重复的三元组。
+
+```
+例如, 给定数组 nums = [-1, 0, 1, 2, -1, -4]，
+
+满足要求的三元组集合为：
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
+```
+
+> 数组放进二维数组前通过可以通过 Object 来判断是否有相同的数组
+
+```javascript
+let obj = {}
+let twoArr = [];
+let arr = [1,2,3]
+if(!obj[arr]){
+    twoArr.push(arr);
+    obj[arr] = true;
+}
+// 那么再次添加 [1,2,3] 就应为 obj[arr] == true 所以添加不进去。
+```
+
+```javascript
+var threeSum = function(nums) {
+    var result = new Array();
+    var len = nums.length;
+    var flag = 0;
+    var hash = {};
+    // 排成正序
+    nums.sort((a, b) => {
+        return a-b;
+    });
+    if(nums[0] > 0 || nums[len - 1] < 0) return result;
+    for(var i = 0; i < len; i++){
+        if(nums[i] === nums[i-1]) continue;
+        flag = 0 - nums[i];
+        // 通过两个指针来选取元素
+        var start = i + 1, end = len - 1;
+        while(start < end){
+            var middle = new Array();
+            if(nums[start] + nums[end] < flag){
+                start ++;
+            } else if(nums[start] + nums[end] > flag){
+                end--;
+            } else {
+                middle.push(nums[i]);
+                middle.push(nums[start]);
+                middle.push(nums[end]);
+                if(!hash[middle]){
+                    hash[middle] = true;
+                    result.push(middle);
+                }
+                start += 1;
+                end -= 1;
+                // 相同元素 。 那么指针再移动
+                while(start < end && nums[start] === nums[start - 1]){
+                    start += 1;
+                }
+                while(start < end && nums[end] === nums[end + 1]){
+                    end -= 1;
+                }
+            }
+        }
+    }
+    return result;
+   
+    
+};
+```
+
+### 下一个排序 - 31
+
+实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。
+
+如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
+
+必须**原地**修改，只允许使用额外常数空间。
+
+以下是一些例子，输入位于左侧列，其相应输出位于右侧列。
+`1,2,3` → `1,3,2`
+`3,2,1` → `1,2,3`
+`1,1,5` → `1,5,1`
+
+```javascript
+var nextPermutation = function(nums) {
+    for (var i = nums.length-1; i > 0; i--) {
+        if (nums[i] > nums[i-1]) {
+            var j = i;
+            while (nums[j] > nums[i-1] && j <= nums.length-1) {
+                j++;
+            }
+            swap(j-1, i-1);
+            reserve(i);
+            return
+        }
+    }
+    if (i == 0) {
+        reserve(i)
+    }
+    function reserve(start){
+        var i = start, j = nums.length-1;
+        while (i <=j) {
+            var temp = nums[j];
+            nums[j] = nums[i];
+            nums[i] = temp;
+            i++;
+            j--;
+        }
+        return nums
+    }
+    function swap(i, j) {
+        var temp = nums[j]
+        nums[j] =nums[i];
+        nums[i] = temp;   
+    }
 };
 ```
 
