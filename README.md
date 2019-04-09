@@ -1,4 +1,4 @@
-## 每日两题 LeetCode
+## LeetCode 解答
 
 ### LeetCode 题序
 
@@ -180,6 +180,47 @@ var nextPermutation = function(nums) {
         nums[j] =nums[i];
         nums[i] = temp;   
     }
+};
+```
+
+### 完全平方数 - 279
+
+给定正整数 *n*，找到若干个完全平方数（比如 `1, 4, 9, 16, ...`）使得它们的和等于 *n*。你需要让组成和的完全平方数的个数最少。
+
+**示例 1:**
+
+```
+输入: n = 12
+输出: 3 
+解释: 12 = 4 + 4 + 4.
+```
+
+**示例 2:**
+
+```
+输入: n = 13
+输出: 2
+解释: 13 = 4 + 9
+```
+
+解答
+
+```javascript
+// 这里最后还是有点疑问
+var numSquares = function(n) {
+  const dp = [0];
+  const sqrt = Math.sqrt(n);
+  for(let i = 1; i <= n; i++){
+      dp[i] = dp[i-1]+1;
+      for(let j = 1; j <= sqrt; j++ ){
+          if(j*j > i){
+              break;
+          }else{
+              dp[i] = Math.min(dp[i - j*j] + 1, dp[i]);
+          }
+      }
+  }
+  return dp[n];
 };
 ```
 
